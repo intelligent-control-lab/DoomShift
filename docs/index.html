@@ -61,9 +61,10 @@
         <source src="static/videos/rollouts_unseen_map07.mp4" type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered figure-caption">
-        On a map it never saw, the zero-shot world model still turns, moves and fires with the player's actions,
-        but draws the walls and floors of its training maps. After adaptation on eight episodes of the new map,
-        its predictions move much closer to the true scene.
+        Rollouts on arena 7, a map the model never saw in training: each starts from 32 true frames and follows the
+        recorded actions for 16 tics. The zero-shot SD 1.4 U-Net keeps turning, firing and moving with the actions,
+        but within a few tics replaces the arena's grey walls and brown floor with the dark stone of its training maps.
+        After LoRA adaptation on eight episodes of this map, it keeps the new scene (scene PSNR against the true frame).
       </h2>
     </div>
   </div>
