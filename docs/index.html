@@ -62,7 +62,7 @@
       </video>
       <h2 class="subtitle has-text-centered figure-caption">
         Rollouts on arena 7, a map the model never saw in training: each starts from 32 true frames and follows the
-        recorded actions for 16 tics. The zero-shot SD 1.4 U-Net keeps turning, firing and moving with the actions,
+        recorded actions for 16 tics (shown from tic 4). The zero-shot SD 1.4 U-Net keeps turning, firing and moving with the actions,
         but within a few tics replaces the arena's grey walls and brown floor with the dark stone of its training maps.
         After LoRA adaptation on eight episodes of this map, it keeps the new scene (scene PSNR against the true frame).
       </h2>
@@ -96,7 +96,7 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Finding 1: control transfers, the scene does not</h2>
+    <h2 class="title is-3 has-text-centered">Zero-shot evaluation on unseen maps</h2>
     <img src="static/images/teaser.png" alt="Training-map and unseen-map predictions, zero-shot and adapted, against ground truth">
     <p class="figure-caption has-text-centered">(a) On the training maps the prediction is close to the ground truth; (b) on an unseen map it is not, until adapted on eight episodes.</p>
     <div class="content" style="margin-top: 1.2rem;">
@@ -120,7 +120,7 @@
 
 <section class="section">
   <div class="container is-max-desktop">
-    <h2 class="title is-3 has-text-centered">Finding 2: the scene is cheap to recover</h2>
+    <h2 class="title is-3 has-text-centered">Adaptation cost</h2>
     <img src="static/images/results.png" alt="Per-map scene PSNR and LPIPS, zero-shot and adapted, and median recovery against adapter updates">
     <p class="figure-caption has-text-centered">(a, b) Scene PSNR and LPIPS per unseen map, zero-shot (open) and after 4k adaptation updates (filled). (c, d) Median statistics against adapter updates.</p>
     <div class="content" style="margin-top: 1.2rem;">
