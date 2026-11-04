@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DoomShift: a controlled scene shift for world models. Control transfers to unseen Doom maps, appearance does not, and eight episodes of LoRA adaptation recover most of it.">
+  <title>DoomShift: How Much Adaptation Do World Models Need Under Domain Shift?</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <style>
+    body { font-family: 'Noto Sans', sans-serif; }
+    .publication-title, .title { font-family: 'Google Sans', sans-serif; }
+    .publication-title { font-size: 2.6rem; }
+    .publication-authors { font-family: 'Google Sans', sans-serif; font-size: 1.25rem; }
+    .publication-authors a { color: hsl(204, 86%, 53%); }
+    .publication-venue { color: #555; font-size: 1.05rem; margin-top: .4rem; }
+    .link-block a { margin: .3rem .2rem; }
+    .teaser video { width: 100%; border-radius: 6px; }
+    .section .content p { text-align: justify; }
+    .figure-caption { color: #555; font-size: .95rem; margin-top: .6rem; }
+    table.results td, table.results th { text-align: center; vertical-align: middle; }
+    table.results td:first-child, table.results th:first-child { text-align: left; }
+    .key-number { color: #c41230; font-weight: 700; }
+    pre { white-space: pre-wrap; }
+    footer.footer { padding: 2rem 1.5rem 3rem; }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <h1 class="title is-1 publication-title">DoomShift: How Much Adaptation Do World Models Need Under Domain Shift?</h1>
+      <div class="publication-authors">
+        <span>Rohan Nagabhirava</span>,&nbsp;
+        <span>Keerthana Chirumamilla</span>,&nbsp;
+        <span>Changliu Liu</span>
+      </div>
+      <div class="publication-authors"><span>Carnegie Mellon University</span></div>
+      <div class="publication-venue">CoRL 2026 Workshops: PhysWM and The Action Gap (TAG)</div>
+      <div class="publication-links" style="margin-top: 1.2rem;">
+        <span class="link-block"><a href="static/DoomShift.pdf" class="button is-normal is-rounded is-dark">
+          <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span></a></span>
+        <span class="link-block"><a href="https://github.com/intelligent-control-lab/DoomShift" class="button is-normal is-rounded is-dark">
+          <span class="icon"><i class="fab fa-github"></i></span><span>Code</span></a></span>
+        <span class="link-block"><a href="https://huggingface.co/datasets/RohanNaga/doom-dense-arnold" class="button is-normal is-rounded is-dark">
+          <span class="icon"><i class="fas fa-database"></i></span><span>Dataset</span></a></span>
+        <span class="link-block"><a href="https://huggingface.co/RohanNaga/doomdit-nexttic" class="button is-normal is-rounded is-dark">
+          <span class="icon"><i class="fas fa-cube"></i></span><span>Models</span></a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video autoplay muted loop playsinline poster="static/images/rollouts_poster.jpg">
+        <source src="static/videos/rollouts_unseen_map07.mp4" type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered figure-caption">
+        On a map it never saw, the zero-shot world model still turns, moves and fires with the player's actions,
+        but draws the walls and floors of its training maps. After adaptation on eight episodes of the new map,
+        its predictions move much closer to the true scene.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>World models have become capable simulators, but they are evaluated almost exclusively on held-out rollouts from the domain they were trained on. A small domain shift, such as a new map of the same game, lighting, textures or enemies, can make their outputs drift even when the underlying physics and game engine are unchanged. With DoomShift, a controlled version of this shift in Doom, we measure what breaks and how much adaptation is needed to repair it. We train three diffusion backbones, initialized from pretrained diffusion image models, on four Doom maps and evaluate them on 13 unseen maps. All three preserve their response to controls but fail to reproduce the new scene: scene PSNR drops by 2.8&ndash;3.3&nbsp;dB and LPIPS rises by 0.126&ndash;0.145 across the three backbones. This consistent gap shows that action-conditioned behavior transfers more reliably than scene appearance, independent of architecture or model scale. Yet the lost appearance is relatively cheap to recover: rank-16 adapters trained on only eight episodes with 2% of the original training updates recover 72&ndash;76% of the LPIPS rise and about half of the lost PSNR. Together, these results suggest that adapting a world model to a new environment may require restoring the scene's appearance rather than relearning the underlying game.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">A controlled scene shift</h2>
+    <div class="content">
+      <p>Seventeen Doom maps share one physics and game engine and differ only in layout, textures and lighting. We record 2,412 episodes of the Arnold agent playing deathmatches (about 96 hours of play and 12.1M frames at every engine tic), train on 4 maps and hold out 13. Three pretrained diffusion models become next-tic world models under one recipe: the SD&nbsp;1.4 U-Net (860M), PixArt-&alpha; (628M) and SD&nbsp;3.5 Medium (2.27B), each predicting the next frame from 32 context frames and the newest action.</p>
+    </div>
+    <img src="static/images/method.png" alt="Method overview: data, models and training, adaptation and decoder fine-tuning, evaluation against the raw frame">
+    <p class="figure-caption has-text-centered">(a) Data, (b) models and training, (c) adaptation and decoder fine-tuning, (d) evaluation against the raw frame.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Finding 1: control transfers, the scene does not</h2>
+    <img src="static/images/teaser.png" alt="Training-map and unseen-map predictions, zero-shot and adapted, against ground truth">
+    <p class="figure-caption has-text-centered">(a) On the training maps the prediction is close to the ground truth; (b) on an unseen map it is not, until adapted on eight episodes.</p>
+    <div class="content" style="margin-top: 1.2rem;">
+      <p>On the 13 unseen maps every backbone keeps its response to the turn control, while scene PSNR drops by 2.8&ndash;3.3&nbsp;dB and LPIPS roughly doubles. Every unseen map has worse LPIPS than every training map.</p>
+    </div>
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped results">
+        <thead>
+          <tr><th>Backbone</th><th>Scene PSNR (dB) &uarr;<br><small>train &rarr; unseen</small></th><th>LPIPS &darr;<br><small>train &rarr; unseen</small></th><th>Turn-response &uarr;<br><small>train &rarr; unseen</small></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SD 1.4 U-Net</td><td>25.20 &rarr; 22.30</td><td>0.158 &rarr; 0.303</td><td>0.86 &rarr; 0.81</td></tr>
+          <tr><td>PixArt-&alpha;</td><td>25.18 &rarr; 22.38</td><td>0.159 &rarr; 0.285</td><td>0.84 &rarr; 0.79</td></tr>
+          <tr><td>SD 3.5 Medium</td><td>25.38 &rarr; 22.09</td><td>0.126 &rarr; 0.262</td><td>0.84 &rarr; 0.81</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="figure-caption">Medians over maps, one tic ahead, against the raw frame. Turn-response: flip the last turn and count the windows whose predicted horizontal shift reverses direction; 0 for a model that ignores actions and 0.89 for a perfect model, because 11% of recorded turns move the view too little to measure in one tic.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Finding 2: the scene is cheap to recover</h2>
+    <img src="static/images/results.png" alt="Per-map scene PSNR and LPIPS, zero-shot and adapted, and median recovery against adapter updates">
+    <p class="figure-caption has-text-centered">(a, b) Scene PSNR and LPIPS per unseen map, zero-shot (open) and after 4k adaptation updates (filled). (c, d) Median statistics against adapter updates.</p>
+    <div class="content" style="margin-top: 1.2rem;">
+      <ul>
+        <li>Rank-16 LoRA adapters on the attention layers, trained on <strong>8 episodes</strong> of the new map.</li>
+        <li><strong>4k updates</strong>: 2% of the pretraining updates and about 1% of its compute.</li>
+        <li>They recover <span class="key-number">72&ndash;76%</span> of the LPIPS rise and about half of the lost PSNR, and half of the LPIPS rise within a median of 150&ndash;250 updates.</li>
+        <li>Full fine-tuning of the U-Net recovers more (88% vs. 72%) but needs 205&times; more trainable parameters and forgets 2.7&times; more on the training maps (1.08 vs. 0.40&nbsp;dB).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3">BibTeX</h2>
+    <pre><code>@inproceedings{nagabhirava2026doomshift,
+  title     = {DoomShift: How Much Adaptation Do World Models Need Under Domain Shift?},
+  author    = {Nagabhirava, Rohan and Chirumamilla, Keerthana and Liu, Changliu},
+  booktitle = {CoRL 2026 Workshop on Bringing Physics Simulation and World Models Together for Robotic Manipulation},
+  year      = {2026}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>Intelligent Control Lab, Carnegie Mellon University.<br>
+      This page adapts the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> project page template, licensed under
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

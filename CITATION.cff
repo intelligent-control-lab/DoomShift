@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use DoomShift, please cite it as below."
+title: "DoomShift: How Much Adaptation Do World Models Need Under Domain Shift?"
+authors:
+  - family-names: Nagabhirava
+    given-names: Rohan
+    affiliation: Carnegie Mellon University
+  - family-names: Chirumamilla
+    given-names: Keerthana
+    affiliation: Carnegie Mellon University
+  - family-names: Liu
+    given-names: Changliu
+    affiliation: Carnegie Mellon University
+year: 2026
+url: "https://intelligent-control-lab.github.io/DoomShift/"
+repository-code: "https://github.com/intelligent-control-lab/DoomShift"
+license: MIT
+preferred-citation:
+  type: conference-paper
+  title: "DoomShift: How Much Adaptation Do World Models Need Under Domain Shift?"
+  authors:
+    - family-names: Nagabhirava
+      given-names: Rohan
+    - family-names: Chirumamilla
+      given-names: Keerthana
+    - family-names: Liu
+      given-names: Changliu
+  collection-title: "CoRL 2026 Workshop on Bringing Physics Simulation and World Models Together for Robotic Manipulation"
+  year: 2026
