@@ -61,9 +61,9 @@
         <source src="static/videos/rollouts_unseen_map07.mp4" type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered figure-caption">
-        Rollouts on arena 7, a map the model never saw in training: each starts from 32 true frames and follows the
+        Rollouts on unseen map 7, a map the model never saw in training: each starts from 32 true frames and follows the
         recorded actions for 16 tics (shown from tic 4). The zero-shot SD 1.4 U-Net keeps turning, firing and moving with the actions,
-        but within a few tics replaces the arena's grey walls and brown floor with the dark stone of its training maps.
+        but within a few tics replaces the map's grey walls and brown floor with the dark stone of its training maps.
         After LoRA adaptation on eight episodes of this map, it keeps the new scene (scene PSNR against the true frame).
       </h2>
     </div>
@@ -131,6 +131,20 @@
         <li>Full fine-tuning of the U-Net recovers more (88% vs. 72%) but needs 205&times; more trainable parameters and forgets 2.7&times; more on the training maps (1.08 vs. 0.40&nbsp;dB).</li>
       </ul>
     </div>
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped results">
+        <thead>
+          <tr><th>Unseen maps, after 4k updates</th><th>Scene PSNR (dB) &uarr;<br><small>zero-shot &rarr; 4k</small></th><th>LPIPS &darr;<br><small>zero-shot &rarr; 4k</small></th><th>Turn-response &uarr;<br><small>zero-shot &rarr; 4k</small></th><th>Recovered<br><small>PSNR / LPIPS</small></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SD 1.4 U-Net, LoRA</td><td>22.30 &rarr; 23.60</td><td>0.303 &rarr; 0.210</td><td>0.81 &rarr; 0.84</td><td>48% / 72%</td></tr>
+          <tr><td>PixArt-&alpha;, LoRA</td><td>22.38 &rarr; 23.67</td><td>0.285 &rarr; 0.204</td><td>0.79 &rarr; 0.84</td><td>47% / 76%</td></tr>
+          <tr><td>SD 3.5 Medium, LoRA</td><td>22.09 &rarr; 23.83</td><td>0.262 &rarr; 0.166</td><td>0.81 &rarr; 0.83</td><td>48% / 76%</td></tr>
+          <tr><td>SD 1.4 U-Net, full fine-tune</td><td>22.30 &rarr; 23.98</td><td>0.303 &rarr; 0.184</td><td>0.81 &rarr; 0.85</td><td>54% / 88%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="figure-caption">Medians over the 13 unseen maps, one tic ahead, against the raw frame. Recovered: the share of the zero-shot gap to the training maps that 4k updates close, computed per map and then the median.</p>
   </div>
 </section>
 
