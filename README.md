@@ -22,7 +22,7 @@ DoomShift isolates a scene shift: 17 Doom maps share one physics and game engine
 | | `encode_parquet.py` | Encodes the frames to latents with the backbone's autoencoder (SD KL-f8, 4 channels; SD 3.5, 16 channels) |
 | | `make_dense_eval_splits.py`, `adapt_split.py` | Builds the held-out evaluation splits and the per-map adaptation splits |
 | Models | `backbones.py`, `diffusion_v.py`, `lora.py` | The three backbones behind one interface, the v-prediction objective with context-noise augmentation, and the LoRA adapters |
-| Training | `train_wm.py` | Trains a next-tic world model on any backbone under one recipe: 32 context frames and the newest action |
+| Training | `train_wm.py` | Trains a next-tic world model on any backbone under one recipe: 32 context frames and the buttons executed on them |
 | Decoder | `finetune_decoder.py` | Fine-tunes the VAE decoder on training-map frames (MSE + 0.1 LPIPS), encoder frozen |
 | Adaptation | `adapt_wm.py` | Adapts a trained model to an unseen map with rank-16 LoRA on the attention layers (or a full fine-tune) |
 | Evaluation | `eval_tf.py` | Scene PSNR and LPIPS one tic ahead against the raw frame |
